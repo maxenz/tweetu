@@ -1,0 +1,14 @@
+{
+  "name": "tweetu",
+  "version": "1.0.0",
+  "description": "Getting tweets from your favourite accounts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Maximiliano Poggio",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
