@@ -52,7 +52,9 @@ router.patch("/api/users/favourite", auth, async (req, res) => {
       await socialAccount.save();
     }
 
-    const followedAccounts = req.user.followedAccounts.map(acc => acc.toString());
+    const followedAccounts = req.user.followedAccounts.map((acc) =>
+      acc.toString()
+    );
     const account = socialAccount._id.toString();
 
     if (followedAccounts.includes(account)) {
@@ -67,9 +69,23 @@ router.patch("/api/users/favourite", auth, async (req, res) => {
     }
 
     await req.user.save();
+    await req.user
+      .populate({
+        path: "followedAccounts",
+      })
+      .execPopulate();
     res.send({ user: req.user });
   } catch (e) {
     res.status(400).send(e);
+  }
+});
+
+router.get("/api/users/checkToken", auth, async (req, res) => {
+  try {
+    await req.user.populate({ path: "followedAccounts" }).execPopulate();
+    res.status(200).send({ user: req.user });
+  } catch (e) {
+    res.sendStatus(500);
   }
 });
 

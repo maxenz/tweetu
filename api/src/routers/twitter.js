@@ -19,7 +19,7 @@ const client = new Twitter({
   access_token_secret: TWITTER_ACCESS_TOKEN_SECRET,
 });
 
-router.get("/api/twitter/userSearch", auth, async (req, res) => {
+router.get("/api/twitter/userSearch", async (req, res) => {
   const { q } = req.query;
   try {
     const results = await client.get("users/search", { q });
@@ -28,7 +28,5 @@ router.get("/api/twitter/userSearch", auth, async (req, res) => {
     res.status(500).send(e);
   }
 });
-
-
 
 module.exports = router;

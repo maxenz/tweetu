@@ -1,0 +1,1 @@
+export const LightBlue = "#1da1f2";
