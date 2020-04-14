@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { LightBlue } from "../utils/colors";
+import { LightBlue, Red } from "../utils/colors";
 import useHover from "../hooks/useHover";
 
 const StyledTwitterCard = styled.div`
@@ -200,7 +200,7 @@ const StyledButtonFollowing = styled(StyledButton)`
   color: white;
 
   &:hover {
-    background-color: #ff4d4f;
+    background-color: ${Red};
   }
 `;
 

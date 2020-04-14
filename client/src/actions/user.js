@@ -2,7 +2,10 @@ import {
   SET_USER_INFO_OK,
   LOGIN_USER_OK,
   LOGOUT_USER_OK,
+  LOGIN_USER_ERROR,
   TOGGLE_FAVOURITE_ACCOUNT_OK,
+  REGISTER_USER_OK,
+  REGISTER_USER_ERROR,
 } from "./actionTypes";
 import API from "../api/index";
 import * as auth from "../helpers/auth";
@@ -16,7 +19,9 @@ export const login = (email, password) => async (dispatch) => {
       payload: data.user,
     });
   } catch (e) {
-    console.log(e);
+    dispatch({
+      type: LOGIN_USER_ERROR,
+    });
   }
 };
 
@@ -29,6 +34,20 @@ export const logout = () => async (dispatch) => {
     });
   } catch (e) {
     console.log(e);
+  }
+};
+
+export const register = (user) => async (dispatch) => {
+  try {
+    const { data } = await API.user.register(user);
+    auth.setTokenInLocalStorage(data.token);
+    dispatch({
+      type: REGISTER_USER_OK,
+      payload: data.user,
+    });
+  } catch (e) {
+    console.log(e);
+    dispatch({ type: REGISTER_USER_ERROR, payload: e.response.data });
   }
 };
 

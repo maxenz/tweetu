@@ -1,46 +1,62 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { Form, Input, Button } from "antd";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import * as actions from "../../actions/user";
 import ErrorMessage from "../../shared/ErrorMessage";
 
-const StyledLoginButton = styled(Button)`
+const StyledRegisterButton = styled(Button)`
   width: 100%;
 `;
 
-const StyledRegisterLinkContainer = styled.div`
-  text-align: right;
-  margin-top: 15px;
-`;
-
-const LoginForm = () => {
+const RegisterForm = () => {
   const userNameRef = useRef(null);
   const userLoggedIn = useSelector((store) => store.user.loggedIn);
-  const loginError = useSelector((store) => store.user.loginError);
+  const registerError = useSelector((store) => store.user.registerError);
   const dispatch = useDispatch();
 
   useEffect(() => {
     userNameRef.current.focus();
   }, []);
 
-  const onFinish = ({ email, password }) => {
-    dispatch(actions.login(email, password));
+  const onFinish = (user) => {
+    dispatch(actions.register(user));
   };
 
   return (
     <>
       {userLoggedIn && <Redirect to="/" />}
       <Form
-        name="normal_login"
-        className="login-form"
+        name="normal_register"
+        className="register-form"
         initialValues={{
           remember: true,
         }}
         onFinish={onFinish}
       >
+        <Form.Item
+          name="name"
+          rules={[
+            {
+              required: true,
+              message: "Por favor, ingresá tu nombre.",
+            },
+          ]}
+        >
+          <Input placeholder="Nombre" ref={userNameRef} />
+        </Form.Item>
+        <Form.Item
+          name="lastName"
+          rules={[
+            {
+              required: true,
+              message: "Por favor, ingresá tu apellido.",
+            },
+          ]}
+        >
+          <Input placeholder="Apellido" />
+        </Form.Item>
         <Form.Item
           name="email"
           rules={[
@@ -50,11 +66,7 @@ const LoginForm = () => {
             },
           ]}
         >
-          <Input
-            prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="Email"
-            ref={userNameRef}
-          />
+          <Input placeholder="Email" />
         </Form.Item>
         <Form.Item
           name="password"
@@ -65,35 +77,24 @@ const LoginForm = () => {
             },
           ]}
         >
-          <Input
-            prefix={<LockOutlined className="site-form-item-icon" />}
-            type="password"
-            placeholder="Password"
-          />
-        </Form.Item>
-        <Form.Item>
-          <a className="login-form-forgot" href="">
-            Olvidé mi password
-          </a>
+          <Input type="password" placeholder="Password" />
         </Form.Item>
 
         <Form.Item>
-          <StyledLoginButton
+          <StyledRegisterButton
             type="primary"
             htmlType="submit"
             className="login-form-button"
           >
-            Iniciar sesión
-          </StyledLoginButton>
+            Registrarse
+          </StyledRegisterButton>
         </Form.Item>
-        {loginError && (
+        {registerError && (
           <ErrorMessage>
-            Las credenciales ingresadas son incorrectas.
+            {registerError.message}
           </ErrorMessage>
         )}
-        <StyledRegisterLinkContainer>
-          <Link to="/register">Registrarse</Link>
-        </StyledRegisterLinkContainer>
+
         <input
           type="password"
           name="whatever"
@@ -105,4 +106,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default RegisterForm;

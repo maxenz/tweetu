@@ -8,6 +8,8 @@ import * as actions from "../actions/user";
 const UserOptionsDropdown = () => {
   const dispatch = useDispatch();
   const loggedIn = useSelector((store) => store.user.loggedIn);
+  const user = useSelector((store) => store.user.userInfo);
+  const fullName = user && `${user.name} ${user.lastName}`;
 
   const logout = (e) => {
     e.preventDefault();
@@ -29,7 +31,7 @@ const UserOptionsDropdown = () => {
   return (
     <Dropdown overlay={menu} trigger={["click"]}>
       <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
-        Maximiliano Poggio <DownOutlined />
+        {fullName} <DownOutlined />
       </a>
     </Dropdown>
   );
